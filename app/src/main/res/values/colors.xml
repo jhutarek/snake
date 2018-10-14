@@ -5,7 +5,7 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="board_background">#ffffff</color>
-    <color name="board_grid">#22000000</color>
+    <color name="board_grid">#0a000000</color>
     <color name="board_snake">@color/colorPrimary</color>
     <color name="board_apple">@color/colorAccent</color>
 </resources>
