@@ -1,15 +1,14 @@
 package cz.jhutarek.snake.game.system
 
 import android.os.Bundle
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import cz.jhutarek.snake.R
 import cz.jhutarek.snake.game.model.Board
-import cz.jhutarek.snake.game.model.Cell
-import cz.jhutarek.snake.game.model.Dimensions
+import cz.jhutarek.snake.game.model.Direction
+import cz.jhutarek.snake.game.model.Game
 import cz.jhutarek.snake.game.system.GameActivity.GameGestureListener.Direction.*
 import kotlinx.android.synthetic.main.game__game_activity.*
 import java.lang.Math.abs
@@ -50,10 +49,26 @@ class GameActivity : AppCompatActivity() {
         GestureDetectorCompat(this, GameGestureListener().apply {
             listener = object : GameGestureListener.Listener {
                 override fun onSwipe(direction: GameGestureListener.Direction) {
-                    Log.d("XXXXXXXXXX", "Swipe: $direction")
+                    game.setDirection(
+                            when (direction) {
+                                UP -> Direction.UP
+                                DOWN -> Direction.DOWN
+                                LEFT -> Direction.LEFT
+                                RIGHT -> Direction.RIGHT
+                            }
+                    )
                 }
             }
         })
+    }
+
+    private val game = Game().apply {
+        listener = object : Game.Listener {
+            override fun onUpdate(board: Board, score: Int, isOver: Boolean) {
+                this@GameActivity.board.board = board
+                this@GameActivity.score.text = score.toString()
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,11 +76,7 @@ class GameActivity : AppCompatActivity() {
 
         setContentView(R.layout.game__game_activity)
 
-        board.board = Board(
-                Dimensions(20, 20),
-                listOf(Cell(3, 1), Cell(4, 1), Cell(5, 1), Cell(5, 2), Cell(5, 3), Cell(5, 4), Cell(5, 5)),
-                listOf(Cell(0, 1), Cell(1, 3), Cell(2, 6), Cell(7, 3))
-        )
+        game.start()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
