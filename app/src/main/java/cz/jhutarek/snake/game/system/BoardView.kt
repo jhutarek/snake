@@ -14,9 +14,9 @@ import cz.jhutarek.snake.game.model.Board
 import kotlin.math.min
 
 class BoardView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
     private val backgroundColor = getColor(R.color.board_background)
@@ -74,9 +74,9 @@ class BoardView @JvmOverloads constructor(
     private fun drawHorizontalGridLines(canvas: Canvas, board: Board) {
         for (i in 0..board.dimensions.height) {
             canvas.drawLine(
-                    0f, i * gridSize,
-                    board.dimensions.width * gridSize, i * gridSize,
-                    gridPaint
+                0f, i * gridSize,
+                board.dimensions.width * gridSize, i * gridSize,
+                gridPaint
             )
         }
     }
@@ -84,9 +84,9 @@ class BoardView @JvmOverloads constructor(
     private fun drawVerticalGridLines(canvas: Canvas, board: Board) {
         for (i in 0..board.dimensions.width) {
             canvas.drawLine(
-                    i * gridSize, 0f,
-                    i * gridSize, board.dimensions.height * gridSize,
-                    gridPaint
+                i * gridSize, 0f,
+                i * gridSize, board.dimensions.height * gridSize,
+                gridPaint
             )
         }
     }
@@ -94,9 +94,9 @@ class BoardView @JvmOverloads constructor(
     private fun drawApples(canvas: Canvas, board: Board) {
         board.apples.forEach {
             canvas.drawCircle(
-                    (it.x + 0.5f) * gridSize, (it.y + 0.5f) * gridSize,
-                    gridSize / 2f,
-                    applePaint
+                (it.x + 0.5f) * gridSize, (it.y + 0.5f) * gridSize,
+                gridSize / 2f,
+                applePaint
             )
         }
     }
@@ -104,9 +104,9 @@ class BoardView @JvmOverloads constructor(
     private fun drawSnake(canvas: Canvas, board: Board) {
         board.snake.forEach {
             canvas.drawRect(
-                    it.x * gridSize, it.y * gridSize,
-                    (it.x + 1) * gridSize, (it.y + 1) * gridSize,
-                    snakePaint
+                it.x * gridSize, it.y * gridSize,
+                (it.x + 1) * gridSize, (it.y + 1) * gridSize,
+                snakePaint
             )
         }
     }

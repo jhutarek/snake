@@ -26,7 +26,12 @@ class GameActivity : AppCompatActivity() {
 
         override fun onDown(e: MotionEvent) = true
 
-        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        override fun onFling(
+            e1: MotionEvent,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
             val dx = abs(e1.x - e2.x)
             val dy = abs(e1.y - e2.y)
 
@@ -50,12 +55,12 @@ class GameActivity : AppCompatActivity() {
             listener = object : GameGestureListener.Listener {
                 override fun onSwipe(direction: GameGestureListener.Direction) {
                     game.setDirection(
-                            when (direction) {
-                                UP -> Direction.UP
-                                DOWN -> Direction.DOWN
-                                LEFT -> Direction.LEFT
-                                RIGHT -> Direction.RIGHT
-                            }
+                        when (direction) {
+                            UP -> Direction.UP
+                            DOWN -> Direction.DOWN
+                            LEFT -> Direction.LEFT
+                            RIGHT -> Direction.RIGHT
+                        }
                     )
                 }
             }
