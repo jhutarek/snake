@@ -1,4 +1,4 @@
-package cz.jhutarek.snake.game.system
+package cz.jhutarek.snake.gameold.system
 
 import android.os.Bundle
 import android.view.GestureDetector
@@ -6,10 +6,10 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import cz.jhutarek.snake.R
-import cz.jhutarek.snake.game.model.Board
-import cz.jhutarek.snake.game.model.Direction
-import cz.jhutarek.snake.game.model.Game
-import cz.jhutarek.snake.game.system.GameActivity.GameGestureListener.Direction.*
+import cz.jhutarek.snake.gameold.model.Board
+import cz.jhutarek.snake.gameold.model.Direction
+import cz.jhutarek.snake.gameold.model.Game
+import cz.jhutarek.snake.gameold.system.GameActivity.GameGestureListener.Direction.*
 import kotlinx.android.synthetic.main.game__game_activity.*
 import java.lang.Math.abs
 

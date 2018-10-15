@@ -1,6 +1,6 @@
-package cz.jhutarek.snake.game.model
+package cz.jhutarek.snake.gameold.model
 
-import cz.jhutarek.snake.game.model.Direction.LEFT
+import cz.jhutarek.snake.gameold.model.Direction.LEFT
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers

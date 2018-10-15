@@ -1,4 +1,4 @@
-package cz.jhutarek.snake.game.model
+package cz.jhutarek.snake.gameold.model
 
 import kotlin.random.Random
 

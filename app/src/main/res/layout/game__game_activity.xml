@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".game.system.GameActivity">
+    tools:context=".gameold.system.GameActivity">
 
     <TextView
         android:id="@+id/score"
@@ -14,7 +14,7 @@
         android:textColor="@color/colorAccent"
         tools:text="123" />
 
-    <cz.jhutarek.snake.game.system.BoardView
+    <cz.jhutarek.snake.gameold.system.BoardView
         android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="0dp"

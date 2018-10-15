@@ -1,4 +1,4 @@
-package cz.jhutarek.snake.game.model
+package cz.jhutarek.snake.gameold.model
 
 data class Dimensions(
     val width: Int,

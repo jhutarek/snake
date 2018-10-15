@@ -1,4 +1,4 @@
-package cz.jhutarek.snake.game.model
+package cz.jhutarek.snake.gameold.model
 
 enum class Direction(val dx: Int, val dy: Int) {
     UP(0, -1),

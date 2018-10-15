@@ -1,4 +1,4 @@
-package cz.jhutarek.snake.game.system
+package cz.jhutarek.snake.gameold.system
 
 import android.content.Context
 import android.graphics.Canvas
@@ -10,7 +10,7 @@ import android.view.View
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import cz.jhutarek.snake.R
-import cz.jhutarek.snake.game.model.Board
+import cz.jhutarek.snake.gameold.model.Board
 import kotlin.math.min
 
 class BoardView @JvmOverloads constructor(
