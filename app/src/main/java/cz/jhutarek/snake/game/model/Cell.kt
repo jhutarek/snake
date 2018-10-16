@@ -4,5 +4,7 @@ data class Cell(
     val x: Int,
     val y: Int
 ) {
-    operator fun plus(direction: Direction) = Cell(x + direction.dx, y + direction.dy)
+    fun move(direction: Direction) = Cell(x + direction.dx, y + direction.dy)
+
+    operator fun plus(cells: List<Cell>): List<Cell> = listOf(this) + cells
 }
