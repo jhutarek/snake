@@ -1,9 +1,9 @@
 package cz.jhutarek.snake.game.model
 
 data class Snake(
-    val cells: List<Cell>,
-    val direction: Direction,
-    val futureGrowth: Int = 0
+    private val cells: List<Cell>,
+    private val direction: Direction,
+    private val futureGrowth: Int = 0
 ) {
     companion object {
         private const val APPLE_FUTURE_GROWTH = 1
