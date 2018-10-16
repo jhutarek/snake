@@ -82,4 +82,10 @@ internal class SnakeTest {
         assertThat(anySnake.eat(apples))
             .isEqualTo(Pair(anySnake.copy(futureGrowth = 1), apples.copy(cells = setOf(Cell(0, 0)))))
     }
+
+    @Test
+    fun `should grow tail on next move if future growth is greater than zero`() {
+        assertThat(anySnake.copy(futureGrowth = 1).move())
+            .isEqualTo(anySnake.copy(cells = listOf(Cell(2, 3), Cell(3, 3), Cell(4, 3), Cell(5, 3)), futureGrowth = 0))
+    }
 }

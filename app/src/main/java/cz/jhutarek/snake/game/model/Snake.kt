@@ -19,9 +19,12 @@ data class Snake(
 
     fun move(): Snake {
         val newHead = head.move(direction)
-        val newTail = cells.dropLast(1)
+        val newTail = if (futureGrowth > 0) cells else cells.dropLast(1)
 
-        return copy(cells = newHead + newTail)
+        return copy(
+            cells = newHead + newTail,
+            futureGrowth = (futureGrowth - 1).coerceAtLeast(0)
+        )
     }
 
     fun turn(direction: Direction) =
