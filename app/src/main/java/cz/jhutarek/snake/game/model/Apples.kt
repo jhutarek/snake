@@ -3,11 +3,11 @@ package cz.jhutarek.snake.game.model
 import kotlin.random.Random
 
 data class Apples(
-    val field: Dimensions,
     val cells: Set<Cell> = emptySet(),
-    val maxApples: Int = 3,
-    val growthProbability: Double = 0.1,
-    val randomGenerator: Random = Random
+    private val field: Dimensions,
+    private val maxApples: Int = 3,
+    private val growthProbability: Double = 0.1,
+    private val randomGenerator: Random = Random
 ) {
     init {
         require(maxApples > 0) { "maxApples must be positive" }

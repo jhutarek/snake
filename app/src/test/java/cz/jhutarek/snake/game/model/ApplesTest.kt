@@ -29,23 +29,11 @@ internal class ApplesTest {
                 .isEmpty()
         }
 
-        @Test
-        fun `default max apples should have correct value`() {
-            assertThat(Apples(field = anyField).maxApples)
-                .isEqualTo(expectedDefaultMaxApples)
-        }
-
         @ParameterizedTest
         @ValueSource(ints = [-10, -1, 0])
         fun `should require max apples to be positive`(maxApples: Int) {
             assertThatThrownBy { Apples(field = anyField, maxApples = maxApples) }
                 .isInstanceOf(IllegalArgumentException::class.java)
-        }
-
-        @Test
-        fun `default growth probability should have correct value`() {
-            assertThat(Apples(field = anyField).growthProbability)
-                .isEqualTo(expectedDefaultGrowthProbability)
         }
 
         @ParameterizedTest
