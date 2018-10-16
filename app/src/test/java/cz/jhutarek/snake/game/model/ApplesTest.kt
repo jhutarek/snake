@@ -69,7 +69,7 @@ internal class ApplesTest {
         }
 
         @ParameterizedTest
-        @MethodSource("growthProvider")
+        @MethodSource("growthData")
         fun `should grow apples only when generated random number is below growth probability threshold and there is room for more apples`(
             expectedAppleCells: Set<Cell>,
             generatedRandomNumber: Double,
@@ -88,7 +88,7 @@ internal class ApplesTest {
                 .isEqualTo(apples.copy(cells = expectedAppleCells))
         }
 
-        private fun growthProvider(): Stream<Arguments> {
+        private fun growthData(): Stream<Arguments> {
             val generatedNumberBelowThreshold = anyGrowthProbability - 0.1
             val generatedNumberAboveThreshold = anyGrowthProbability + 0.1
             val maxApplesWithRoom = existingAppleCells.size + 1
