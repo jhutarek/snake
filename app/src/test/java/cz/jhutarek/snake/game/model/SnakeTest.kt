@@ -76,10 +76,10 @@ internal class SnakeTest {
     }
 
     @Test
-    fun `should return new snake and apples without eaten apple if apple was eaten`() {
+    fun `should return new snake with future growth and apples without eaten apple if apple was eaten`() {
         val apples = apples.copy(cells = setOf(headCell, Cell(0, 0)))
 
         assertThat(anySnake.eat(apples))
-            .isEqualTo(Pair(anySnake, apples.copy(cells = setOf(Cell(0, 0)))))
+            .isEqualTo(Pair(anySnake.copy(futureGrowth = 1), apples.copy(cells = setOf(Cell(0, 0)))))
     }
 }

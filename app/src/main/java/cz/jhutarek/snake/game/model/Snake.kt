@@ -2,8 +2,13 @@ package cz.jhutarek.snake.game.model
 
 data class Snake(
     val cells: List<Cell>,
-    val direction: Direction
+    val direction: Direction,
+    val futureGrowth: Int = 0
 ) {
+    companion object {
+        private const val APPLE_FUTURE_GROWTH = 1
+    }
+
     init {
         require(cells.isNotEmpty()) { "Cells must not be empty" }
         require(head.move(direction) != tail.firstOrNull()) { "Direction must not reverse the snake" }
@@ -24,6 +29,9 @@ data class Snake(
         else this
 
     fun eat(apples: Apples) =
-        if (head in apples.cells) Pair(this, apples.copy(cells = apples.cells - head))
+        if (head in apples.cells) Pair(
+            this.copy(futureGrowth = futureGrowth + APPLE_FUTURE_GROWTH),
+            apples.copy(cells = apples.cells - head)
+        )
         else Pair(this, apples)
 }
