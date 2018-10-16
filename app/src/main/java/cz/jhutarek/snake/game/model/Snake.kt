@@ -22,4 +22,8 @@ data class Snake(
     fun turn(direction: Direction) =
         if (direction == this.direction || direction.isOpposite(this.direction)) this
         else copy(direction = direction)
+
+    fun eat(apples: Apples) =
+        if (head in apples.cells) Pair(this, apples.copy(cells = apples.cells - head))
+        else Pair(this, apples)
 }

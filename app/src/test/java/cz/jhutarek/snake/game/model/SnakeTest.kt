@@ -15,6 +15,8 @@ internal class SnakeTest {
     private val tailCells = listOf(Cell(4, 3), Cell(5, 3))
     private val snakeCells = headCell + tailCells
     private val anyDirection = LEFT
+    private val apples = Apples(field = Dimensions(20, 20))
+    private val anySnake = Snake(snakeCells, anyDirection)
 
     @Test
     fun `should require non empty cells`() {
@@ -24,13 +26,13 @@ internal class SnakeTest {
 
     @Test
     fun `should return first cell as head`() {
-        assertThat(Snake(snakeCells, anyDirection).head)
+        assertThat(anySnake.head)
             .isEqualTo(headCell)
     }
 
     @Test
     fun `should return all cells except the first as tail`() {
-        assertThat(Snake(snakeCells, anyDirection).tail)
+        assertThat(anySnake.tail)
             .containsExactlyElementsOf(tailCells)
     }
 
@@ -66,4 +68,18 @@ internal class SnakeTest {
         arguments(DOWN, LEFT, DOWN),
         arguments(LEFT, LEFT, LEFT)
     )
+
+    @Test
+    fun `should return original snake and apples if no apple was eaten`() {
+        assertThat(anySnake.eat(apples))
+            .isEqualTo(Pair(anySnake, apples))
+    }
+
+    @Test
+    fun `should return new snake and apples without eaten apple if apple was eaten`() {
+        val apples = apples.copy(cells = setOf(headCell, Cell(0, 0)))
+
+        assertThat(anySnake.eat(apples))
+            .isEqualTo(Pair(anySnake, apples.copy(cells = setOf(Cell(0, 0)))))
+    }
 }
