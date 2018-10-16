@@ -3,6 +3,7 @@ package cz.jhutarek.snake.game.model
 data class Snake(
     private val cells: List<Cell>,
     private val direction: Direction,
+    private val applesEaten: Int = 0,
     private val futureGrowth: Int = 0
 ) {
     companion object {
@@ -33,8 +34,13 @@ data class Snake(
 
     fun eat(apples: Apples) =
         if (head in apples.cells) Pair(
-            this.copy(futureGrowth = futureGrowth + APPLE_FUTURE_GROWTH),
-            apples.copy(cells = apples.cells - head)
+            this.copy(
+                futureGrowth = futureGrowth + APPLE_FUTURE_GROWTH,
+                applesEaten = applesEaten + 1
+            ),
+            apples.copy(
+                cells = apples.cells - head
+            )
         )
         else Pair(this, apples)
 }
