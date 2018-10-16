@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.ValueSource
 import java.util.stream.Stream
 
 internal class SnakeTest {
@@ -40,6 +41,20 @@ internal class SnakeTest {
     fun `should require direction to not reverse the snake`() {
         assertThatThrownBy { Snake(snakeCells, RIGHT) }
             .isInstanceOf(IllegalArgumentException::class.java)
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = [-10, -1])
+    fun `should require apples eaten not to be negative`(applesEaten: Int) {
+        assertThatThrownBy { Snake(snakeCells, LEFT, applesEaten = applesEaten) }
+            .isInstanceOf(java.lang.IllegalArgumentException::class.java)
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = [-10, -1])
+    fun `should require future growth not to be negative`(futureGrowth: Int) {
+        assertThatThrownBy { Snake(snakeCells, LEFT, futureGrowth = futureGrowth) }
+            .isInstanceOf(java.lang.IllegalArgumentException::class.java)
     }
 
     @ParameterizedTest

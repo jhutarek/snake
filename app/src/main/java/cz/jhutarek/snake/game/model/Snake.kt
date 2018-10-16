@@ -13,6 +13,8 @@ data class Snake(
     init {
         require(cells.isNotEmpty()) { "Cells must not be empty" }
         require(head.move(direction) != tail.firstOrNull()) { "Direction must not reverse the snake" }
+        require(applesEaten >= 0) { "applesEaten must not be negative" }
+        require(futureGrowth >= 0) { "futureGrowth must not be negative" }
     }
 
     val head get() = cells.first()
