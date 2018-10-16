@@ -9,5 +9,5 @@ enum class Direction(
     LEFT(-1, 0),
     RIGHT(1, 0);
 
-    fun isOpposite(other: Direction) = this.dx + other.dx == 0 && this.dy + other.dy == 0
+    fun isPerpendicular(other: Direction) = this.dx + other.dx != 0 && this.dy + other.dy != 0
 }

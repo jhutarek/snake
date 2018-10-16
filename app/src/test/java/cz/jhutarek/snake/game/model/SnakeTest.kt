@@ -57,7 +57,7 @@ internal class SnakeTest {
 
     @ParameterizedTest
     @MethodSource("turnData")
-    fun `should turn if new direction is not opposite`(expectedSnakeDirection: Direction, originalSnakeDirection: Direction, direction: Direction) {
+    fun `should turn if new direction is perpendicular`(expectedSnakeDirection: Direction, originalSnakeDirection: Direction, direction: Direction) {
         assertThat(Snake(snakeCells, originalSnakeDirection).turn(direction))
             .isEqualTo(Snake(snakeCells, expectedSnakeDirection))
     }

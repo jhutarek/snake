@@ -24,17 +24,27 @@ internal class DirectionTest {
     )
 
     @ParameterizedTest
-    @MethodSource("oppositeData")
-    fun `direction should return correct opposite result`(expectedOpposite: Boolean, direction1: Direction, direction2: Direction) {
-        assertThat(direction1.isOpposite(direction2)).isEqualTo(expectedOpposite)
+    @MethodSource("perpendicularData")
+    fun `direction should return correct perpendicular result`(expectedPerpendicular: Boolean, direction1: Direction, direction2: Direction) {
+        assertThat(direction1.isPerpendicular(direction2)).isEqualTo(expectedPerpendicular)
     }
 
-    private fun oppositeData() = Stream.of(
-        arguments(true, UP, DOWN),
-        arguments(true, DOWN, UP),
-        arguments(true, LEFT, RIGHT),
-        arguments(true, RIGHT, LEFT),
+    private fun perpendicularData() = Stream.of(
+        arguments(false, UP, DOWN),
+        arguments(false, DOWN, UP),
+        arguments(false, LEFT, RIGHT),
+        arguments(false, RIGHT, LEFT),
         arguments(false, UP, UP),
-        arguments(false, DOWN, RIGHT)
+        arguments(false, RIGHT, RIGHT),
+        arguments(false, LEFT, LEFT),
+        arguments(false, DOWN, DOWN),
+        arguments(true, UP, LEFT),
+        arguments(true, LEFT, UP),
+        arguments(true, LEFT, DOWN),
+        arguments(true, DOWN, LEFT),
+        arguments(true, DOWN, RIGHT),
+        arguments(true, RIGHT, DOWN),
+        arguments(true, RIGHT, UP),
+        arguments(true, UP, RIGHT)
     )
 }
