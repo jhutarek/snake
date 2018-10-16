@@ -18,4 +18,8 @@ data class Snake(
 
         return copy(cells = newHead + newTail)
     }
+
+    fun turn(direction: Direction) =
+        if (direction == this.direction || direction.isOpposite(this.direction)) this
+        else copy(direction = direction)
 }

@@ -52,4 +52,18 @@ internal class SnakeTest {
         arguments(Snake(listOf(Cell(3, 2), Cell(3, 3), Cell(4, 3)), UP), UP),
         arguments(Snake(listOf(Cell(3, 4), Cell(3, 3), Cell(4, 3)), DOWN), DOWN)
     )
+
+    @ParameterizedTest
+    @MethodSource("turnData")
+    fun `should turn if new direction is not opposite`(expectedSnakeDirection: Direction, originalSnakeDirection: Direction, direction: Direction) {
+        assertThat(Snake(snakeCells, originalSnakeDirection).turn(direction))
+            .isEqualTo(Snake(snakeCells, expectedSnakeDirection))
+    }
+
+    private fun turnData() = Stream.of(
+        arguments(LEFT, LEFT, RIGHT),
+        arguments(UP, LEFT, UP),
+        arguments(DOWN, LEFT, DOWN),
+        arguments(LEFT, LEFT, LEFT)
+    )
 }
