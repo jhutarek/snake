@@ -51,7 +51,7 @@ internal class ApplesTest {
         private val anyGrowthProbability = 0.5
         private val existingAppleCells = setOf(Cell(1, 2))
         private val expectedNewAppleCell = Cell(15, 16)
-        private val randomGenerator = mockk<Random>().apply {
+        private val randomGenerator = mockk<Random> {
             every { nextInt(anyField.width) } returns expectedNewAppleCell.x
             every { nextInt(anyField.height) } returns expectedNewAppleCell.y
         }
