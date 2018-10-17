@@ -6,11 +6,16 @@ sealed class State {
     }
 
     data class Running(
-        val dimensions: Dimensions,
+        val field: Dimensions,
         val snake: Snake,
-        val apples: Apples,
-        val score: Int
-    ) : State()
+        val apples: Apples
+    ) : State() {
+        companion object {
+            private const val SCORE_MULTIPLIER = 100
+        }
+
+        val score = snake.applesEaten * SCORE_MULTIPLIER
+    }
 
     data class Over(
         val score: Int
