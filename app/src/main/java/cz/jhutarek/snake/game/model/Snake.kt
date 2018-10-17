@@ -3,7 +3,7 @@ package cz.jhutarek.snake.game.model
 data class Snake(
     private val cells: List<Cell>,
     private val direction: Direction,
-    private val applesEaten: Int = 0,
+    val applesEaten: Int = 0,
     private val futureGrowth: Int = 0
 ) {
     companion object {
