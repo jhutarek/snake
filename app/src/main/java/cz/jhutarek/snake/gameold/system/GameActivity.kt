@@ -6,9 +6,10 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import cz.jhutarek.snake.R
-import cz.jhutarek.snake.gameold.model.Board
-import cz.jhutarek.snake.gameold.model.Direction
-import cz.jhutarek.snake.gameold.model.Game
+import cz.jhutarek.snake.game.device.TickerImpl
+import cz.jhutarek.snake.game.domain.Game
+import cz.jhutarek.snake.game.domain.StateUpdater
+import cz.jhutarek.snake.game.model.*
 import cz.jhutarek.snake.gameold.system.GameActivity.GameGestureListener.Direction.*
 import kotlinx.android.synthetic.main.game__game_activity.*
 import java.lang.Math.abs
@@ -54,24 +55,33 @@ class GameActivity : AppCompatActivity() {
         GestureDetectorCompat(this, GameGestureListener().apply {
             listener = object : GameGestureListener.Listener {
                 override fun onSwipe(direction: GameGestureListener.Direction) {
-                    game.setDirection(
-                        when (direction) {
-                            UP -> Direction.UP
-                            DOWN -> Direction.DOWN
-                            LEFT -> Direction.LEFT
-                            RIGHT -> Direction.RIGHT
-                        }
-                    )
+                    game.direction = when (direction) {
+                        UP -> Direction.UP
+                        DOWN -> Direction.DOWN
+                        LEFT -> Direction.LEFT
+                        RIGHT -> Direction.RIGHT
+                    }
                 }
             }
         })
     }
 
-    private val game = Game().apply {
-        listener = object : Game.Listener {
-            override fun onUpdate(board: Board, score: Int, isOver: Boolean) {
-                this@GameActivity.board.board = board
-                this@GameActivity.score.text = score.toString()
+    private val game = Game(
+        StateUpdater(
+            State.Running(
+                Dimensions(20, 20),
+                Snake(cells = (10..14).map { Cell(it, 10) }, direction = Direction.LEFT),
+                Apples(field = Dimensions(20, 20))
+            )
+        ),
+        TickerImpl()
+    ).apply {
+        listener = {
+            when (it) {
+                is State.Running -> {
+                    this@GameActivity.board.board = it
+                    this@GameActivity.score.text = it.score.toString()
+                }
             }
         }
     }

@@ -1,8 +1,8 @@
 package cz.jhutarek.snake.game.model
 
 data class Snake(
-    private val cells: List<Cell>,
-    private val direction: Direction,
+    val cells: List<Cell>,
+    val direction: Direction,
     val applesEaten: Int = 0,
     private val futureGrowth: Int = 0
 ) {

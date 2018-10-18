@@ -10,7 +10,7 @@ import android.view.View
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import cz.jhutarek.snake.R
-import cz.jhutarek.snake.gameold.model.Board
+import cz.jhutarek.snake.game.model.State
 import kotlin.math.min
 
 class BoardView @JvmOverloads constructor(
@@ -41,7 +41,7 @@ class BoardView @JvmOverloads constructor(
 
     private var gridSize: Float = 0f
 
-    var board: Board? = null
+    var board: State.Running? = null
         set(value) {
             field = value
             updateGridSize()
@@ -50,7 +50,7 @@ class BoardView @JvmOverloads constructor(
 
     private fun updateGridSize() {
         gridSize = board?.let {
-            min(width.toFloat() / it.dimensions.width, height.toFloat() / it.dimensions.height)
+            min(width.toFloat() / it.field.width, height.toFloat() / it.field.height)
         } ?: 0f
     }
 
@@ -71,28 +71,28 @@ class BoardView @JvmOverloads constructor(
         }
     }
 
-    private fun drawHorizontalGridLines(canvas: Canvas, board: Board) {
-        for (i in 0..board.dimensions.height) {
+    private fun drawHorizontalGridLines(canvas: Canvas, board: State.Running) {
+        for (i in 0..board.field.height) {
             canvas.drawLine(
                 0f, i * gridSize,
-                board.dimensions.width * gridSize, i * gridSize,
+                board.field.width * gridSize, i * gridSize,
                 gridPaint
             )
         }
     }
 
-    private fun drawVerticalGridLines(canvas: Canvas, board: Board) {
-        for (i in 0..board.dimensions.width) {
+    private fun drawVerticalGridLines(canvas: Canvas, board: State.Running) {
+        for (i in 0..board.field.width) {
             canvas.drawLine(
                 i * gridSize, 0f,
-                i * gridSize, board.dimensions.height * gridSize,
+                i * gridSize, board.field.height * gridSize,
                 gridPaint
             )
         }
     }
 
-    private fun drawApples(canvas: Canvas, board: Board) {
-        board.apples.forEach {
+    private fun drawApples(canvas: Canvas, board: State.Running) {
+        board.apples.cells.forEach {
             canvas.drawCircle(
                 (it.x + 0.5f) * gridSize, (it.y + 0.5f) * gridSize,
                 gridSize / 2f,
@@ -101,8 +101,8 @@ class BoardView @JvmOverloads constructor(
         }
     }
 
-    private fun drawSnake(canvas: Canvas, board: Board) {
-        board.snake.forEach {
+    private fun drawSnake(canvas: Canvas, board: State.Running) {
+        board.snake.cells.forEach {
             canvas.drawRect(
                 it.x * gridSize, it.y * gridSize,
                 (it.x + 1) * gridSize, (it.y + 1) * gridSize,
