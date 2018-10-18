@@ -5,7 +5,6 @@ import cz.jhutarek.snake.game.model.State
 
 typealias GameListener = (State) -> Unit
 
-// TODO test
 class Game(
     private val stateUpdater: StateUpdater,
     private val ticker: Ticker
@@ -33,6 +32,7 @@ class Game(
     var direction: Direction = stateUpdater.firstRunningState.snake.direction
 
     fun reset() {
+        ticker.stop()
         state = State.Waiting
     }
 
