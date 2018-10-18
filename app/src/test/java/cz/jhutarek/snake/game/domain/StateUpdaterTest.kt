@@ -15,11 +15,13 @@ internal class StateUpdaterTest {
     private val anyApplesEaten = 123
     private val newSnake = Snake(cells = (0..2).map { Cell(it, 0) }, direction = LEFT)
     private val newApples = mockk<Apples>()
-    private val anyApples = mockk<Apples>()
+    private val anyApples = mockk<Apples> {
+        every { grow() } returns newApples
+    }
     private val anySnake = spyk(Snake(cells = (1..3).map { Cell(it, 0) }, direction = LEFT)) {
         every { move() } returns this
         every { turn(any()) } returns this
-        every { eat(anyApples) } returns Pair(newSnake, newApples)
+        every { eat(any()) } returns Pair(newSnake, newApples)
     }
     private val anyDirection = RIGHT
     private val anyRunningState = State.Running(anyDimensions, anySnake, anyApples)
@@ -33,13 +35,13 @@ internal class StateUpdaterTest {
     }
 
     @Test
-    fun `should turn, move and eat apples on update in running state`() {
+    fun `should turn, move and eat grown apples on update in running state`() {
         updater.update(anyRunningState, anyDirection)
 
         verifyOrder {
             anySnake.turn(anyDirection)
             anySnake.move()
-            anySnake.eat(anyApples)
+            anySnake.eat(newApples)
         }
     }
 
