@@ -4,7 +4,7 @@ import cz.jhutarek.snake.game.domain.Ticker
 import cz.jhutarek.snake.game.domain.TickerListener
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 class TickerImpl : Ticker {
 
@@ -13,7 +13,7 @@ class TickerImpl : Ticker {
     private var disposable: Disposable? = null
 
     override fun start(intervalMillis: Long) {
-        disposable = Observable.interval(intervalMillis, TimeUnit.MILLISECONDS)
+        disposable = Observable.interval(intervalMillis, MILLISECONDS)
             .subscribe { listener?.invoke(Unit) }
     }
 
