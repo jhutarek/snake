@@ -1,50 +1,45 @@
 package cz.jhutarek.snake.game.model
 
 import cz.jhutarek.snake.game.model.Direction.*
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments.arguments
-import org.junit.jupiter.params.provider.MethodSource
-import java.util.stream.Stream
+import cz.jhutarek.snake.game.testinfrastructure.CustomStringSpec
+import io.kotlintest.data.forall
+import io.kotlintest.shouldBe
+import io.kotlintest.tables.row
 
-internal class DirectionTest {
+internal class DirectionTest : CustomStringSpec({
 
-    @ParameterizedTest
-    @MethodSource("dxDyData")
-    fun `direction should have correct dx and dy`(expectedDx: Int, expectedDy: Int, direction: Direction) {
-        assertThat(direction.dx).isEqualTo(expectedDx)
-        assertThat(direction.dy).isEqualTo(expectedDy)
+    "direction should have correct dx and dy" {
+        forall(
+            row(0, -1, UP),
+            row(0, 1, DOWN),
+            row(-1, 0, LEFT),
+            row(1, 0, RIGHT)
+        ) { expectedDx, expectedDy, direction ->
+            direction.dx shouldBe expectedDx
+            direction.dy shouldBe expectedDy
+        }
     }
 
-    private fun dxDyData() = Stream.of(
-        arguments(0, -1, UP),
-        arguments(0, 1, DOWN),
-        arguments(-1, 0, LEFT),
-        arguments(1, 0, RIGHT)
-    )
-
-    @ParameterizedTest
-    @MethodSource("perpendicularData")
-    fun `direction should return correct perpendicular result`(expectedPerpendicular: Boolean, direction1: Direction, direction2: Direction) {
-        assertThat(direction1.isPerpendicular(direction2)).isEqualTo(expectedPerpendicular)
+    "direction should return correct perpendicular result" {
+        forall(
+            row(false, UP, DOWN),
+            row(false, DOWN, UP),
+            row(false, LEFT, RIGHT),
+            row(false, RIGHT, LEFT),
+            row(false, UP, UP),
+            row(false, RIGHT, RIGHT),
+            row(false, LEFT, LEFT),
+            row(false, DOWN, DOWN),
+            row(true, UP, LEFT),
+            row(true, LEFT, UP),
+            row(true, LEFT, DOWN),
+            row(true, DOWN, LEFT),
+            row(true, DOWN, RIGHT),
+            row(true, RIGHT, DOWN),
+            row(true, RIGHT, UP),
+            row(true, UP, RIGHT)
+        ) { expectedIsPerpendicular, direction1, direction2 ->
+            direction1.isPerpendicular(direction2) shouldBe expectedIsPerpendicular
+        }
     }
-
-    private fun perpendicularData() = Stream.of(
-        arguments(false, UP, DOWN),
-        arguments(false, DOWN, UP),
-        arguments(false, LEFT, RIGHT),
-        arguments(false, RIGHT, LEFT),
-        arguments(false, UP, UP),
-        arguments(false, RIGHT, RIGHT),
-        arguments(false, LEFT, LEFT),
-        arguments(false, DOWN, DOWN),
-        arguments(true, UP, LEFT),
-        arguments(true, LEFT, UP),
-        arguments(true, LEFT, DOWN),
-        arguments(true, DOWN, LEFT),
-        arguments(true, DOWN, RIGHT),
-        arguments(true, RIGHT, DOWN),
-        arguments(true, RIGHT, UP),
-        arguments(true, UP, RIGHT)
-    )
-}
+})

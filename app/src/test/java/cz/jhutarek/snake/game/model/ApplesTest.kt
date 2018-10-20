@@ -1,110 +1,92 @@
 package cz.jhutarek.snake.game.model
 
+import cz.jhutarek.snake.game.testinfrastructure.CustomStringSpec
+import io.kotlintest.data.forall
+import io.kotlintest.matchers.beEmpty
+import io.kotlintest.should
+import io.kotlintest.shouldBe
+import io.kotlintest.shouldThrow
+import io.kotlintest.tables.row
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.Arguments.arguments
-import org.junit.jupiter.params.provider.MethodSource
-import org.junit.jupiter.params.provider.ValueSource
-import java.util.stream.Stream
 import kotlin.random.Random
 
-internal class ApplesTest {
+internal class ApplesTest : CustomStringSpec({
 
-    @Nested
-    inner class ParameterChecksTest {
-        private val expectedDefaultMaxApples = 3
-        private val expectedDefaultGrowthProbability = 0.1
+    val field = Dimensions(15, 10)
+    val apples = Apples(field = field)
 
-        private val anyField = Dimensions(15, 10)
+    "default cells should be empty" {
+        apples.cells should beEmpty()
+    }
 
-        @Test
-        fun `default cells should be empty`() {
-            assertThat(Apples(field = anyField).cells)
-                .isEmpty()
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = [-10, -1, 0])
-        fun `should require max apples to be positive`(maxApples: Int) {
-            assertThatThrownBy { Apples(field = anyField, maxApples = maxApples) }
-                .isInstanceOf(IllegalArgumentException::class.java)
-        }
-
-        @ParameterizedTest
-        @ValueSource(doubles = [-10.0, -1.0, -0.0001, 1.00001, 10.0])
-        fun `should require growth probability to be in 0-1`(growthProbability: Double) {
-            assertThatThrownBy { Apples(field = anyField, growthProbability = growthProbability) }
-                .isInstanceOf(IllegalArgumentException::class.java)
+    "constructor should require max apples to be positive" {
+        forall(
+            row(-10),
+            row(-1),
+            row(0)
+        ) { maxApples ->
+            shouldThrow<IllegalArgumentException> { Apples(field = field, maxApples = maxApples) }
         }
     }
 
-    @Nested
-    inner class GrowTest() {
-
-        private val anyField = Dimensions(20, 30)
-        private val anyGrowthProbability = 0.5
-        private val existingAppleCells = setOf(Cell(1, 2))
-        private val expectedNewAppleCell = Cell(15, 16)
-        private val randomGenerator = mockk<Random> {
-            every { nextInt(anyField.width) } returns expectedNewAppleCell.x
-            every { nextInt(anyField.height) } returns expectedNewAppleCell.y
+    "constructor should require growth probability to be in [0, 1)" {
+        forall(
+            row(-10.0),
+            row(-1.0),
+            row(-0.0001),
+            row(1.00001),
+            row(10.0)
+        ) { growthProbability ->
+            shouldThrow<IllegalArgumentException> { Apples(field = field, growthProbability = growthProbability) }
         }
+    }
 
-        @ParameterizedTest
-        @MethodSource("growthData")
-        fun `should grow apples only when generated random number is below growth probability threshold and there is room for more apples`(
-            expectedAppleCells: Set<Cell>,
-            generatedRandomNumber: Double,
-            maxApples: Int
-        ) {
+    "should grow apples only when generated random number is below growth probability threshold and there is room for more apples" {
+        val currentApplesCells = setOf(Cell(1, 2))
+        val expectedNewAppleCell = Cell(15, 16)
+        val randomGenerator = mockk<Random> {
+            every { nextInt(field.width) } returns expectedNewAppleCell.x
+            every { nextInt(field.height) } returns expectedNewAppleCell.y
+        }
+        val growthProbability = 0.5
+        val generatedNumberBelowThreshold = growthProbability - 0.1
+        val generatedNumberAboveThreshold = growthProbability + 0.1
+        val maxApplesWithoutRoom = currentApplesCells.size
+        val maxApplesWithRoom = currentApplesCells.size + 1
+
+        forall(
+            row(
+                currentApplesCells + expectedNewAppleCell,
+                generatedNumberBelowThreshold,
+                maxApplesWithRoom
+            ),
+            row(
+                currentApplesCells,
+                generatedNumberBelowThreshold,
+                maxApplesWithoutRoom
+            ),
+            row(
+                currentApplesCells,
+                generatedNumberAboveThreshold,
+                maxApplesWithRoom
+            ),
+            row(
+                currentApplesCells,
+                generatedNumberAboveThreshold,
+                maxApplesWithoutRoom
+            )
+        ) { expectedCells, generatedRandomNumber, maxApples ->
             every { randomGenerator.nextDouble() } returns generatedRandomNumber
-            val apples = Apples(
-                field = anyField,
-                cells = existingAppleCells,
+            val originalApples = apples.copy(
+                cells = currentApplesCells,
                 maxApples = maxApples,
-                growthProbability = anyGrowthProbability,
+                growthProbability = growthProbability,
                 randomGenerator = randomGenerator
             )
 
-            assertThat(apples.grow())
-                .isEqualTo(apples.copy(cells = expectedAppleCells))
-        }
-
-        private fun growthData(): Stream<Arguments> {
-            val generatedNumberBelowThreshold = anyGrowthProbability - 0.1
-            val generatedNumberAboveThreshold = anyGrowthProbability + 0.1
-            val maxApplesWithRoom = existingAppleCells.size + 1
-            val maxApplesWithoutRoom = existingAppleCells.size
-
-            return Stream.of(
-                arguments(
-                    existingAppleCells + expectedNewAppleCell,
-                    generatedNumberBelowThreshold,
-                    maxApplesWithRoom
-                ),
-                arguments(
-                    existingAppleCells,
-                    generatedNumberBelowThreshold,
-                    maxApplesWithoutRoom
-                ),
-                arguments(
-                    existingAppleCells,
-                    generatedNumberAboveThreshold,
-                    maxApplesWithRoom
-                ),
-                arguments(
-                    existingAppleCells,
-                    generatedNumberAboveThreshold,
-                    maxApplesWithoutRoom
-                )
-            )
+            originalApples.grow() shouldBe originalApples.copy(cells = expectedCells)
         }
     }
-}
+})
 

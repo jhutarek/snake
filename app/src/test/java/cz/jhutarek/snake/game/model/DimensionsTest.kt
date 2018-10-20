@@ -1,26 +1,23 @@
 package cz.jhutarek.snake.game.model
 
-import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments.arguments
-import org.junit.jupiter.params.provider.MethodSource
-import java.util.stream.Stream
+import cz.jhutarek.snake.game.testinfrastructure.CustomStringSpec
+import io.kotlintest.data.forall
+import io.kotlintest.shouldThrow
+import io.kotlintest.tables.row
 
-internal class DimensionsTest {
+internal class DimensionsTest : CustomStringSpec({
 
-    @ParameterizedTest
-    @MethodSource("positiveDimensionsData")
-    fun `should require both dimensions to be positive`(width: Int, height: Int) {
-        assertThatThrownBy { Dimensions(width, height) }.isInstanceOf(IllegalArgumentException::class.java)
+    "constructor should require both dimensions to be positive" {
+        forall(
+            row(-10, 1),
+            row(-1, 1),
+            row(0, 1),
+            row(1, -10),
+            row(1, -1),
+            row(1, 0),
+            row(0, 0)
+        ) { width, height ->
+            shouldThrow<IllegalArgumentException> { Dimensions(width, height) }
+        }
     }
-
-    private fun positiveDimensionsData() = Stream.of(
-        arguments(-10, 1),
-        arguments(-1, 1),
-        arguments(0, 1),
-        arguments(1, -10),
-        arguments(1, -1),
-        arguments(1, 0),
-        arguments(0, 0)
-    )
-}
+})

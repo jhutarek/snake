@@ -1,22 +1,20 @@
 package cz.jhutarek.snake.game.model
 
+import cz.jhutarek.snake.game.testinfrastructure.CustomStringSpec
+import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 
-internal class StateTest {
+internal class StateTest : CustomStringSpec({
 
-    private val anyApplesEaten = 123
-    private val anyDimensions = mockk<Dimensions>()
-    private val anySnake = mockk<Snake> {
-        every { applesEaten } returns anyApplesEaten
+    "score in running state should be multiply of eaten apples" {
+        val applesEaten = 123
+        val dimensions = mockk<Dimensions>()
+        val snake = mockk<Snake> {
+            every { this@mockk.applesEaten } returns applesEaten
+        }
+        val apples = mockk<Apples>()
+
+        State.Running(dimensions, snake, apples).score shouldBe 12_300
     }
-    private val anyApples = mockk<Apples>()
-
-    @Test
-    fun `score in running state should be multiply of eaten apples`() {
-        assertThat(State.Running(anyDimensions, anySnake, anyApples).score)
-            .isEqualTo(12_300)
-    }
-}
+})

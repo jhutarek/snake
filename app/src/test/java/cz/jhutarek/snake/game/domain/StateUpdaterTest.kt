@@ -2,103 +2,93 @@ package cz.jhutarek.snake.game.domain
 
 import cz.jhutarek.snake.game.model.*
 import cz.jhutarek.snake.game.model.Direction.*
+import cz.jhutarek.snake.game.testinfrastructure.CustomStringSpec
+import io.kotlintest.matchers.types.shouldBeInstanceOf
+import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verifyOrder
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 
-internal class StateUpdaterTest {
+internal class StateUpdaterTest : CustomStringSpec({
 
-    private val anyDimensions = Dimensions(30, 20)
-    private val anyApplesEaten = 123
-    private val newSnake = Snake(cells = (0..2).map { Cell(it, 0) }, direction = LEFT)
-    private val newApples = mockk<Apples>()
-    private val anyApples = mockk<Apples> {
-        every { grow() } returns newApples
-    }
-    private val anySnake = spyk(Snake(cells = (1..3).map { Cell(it, 0) }, direction = LEFT)) {
+    val dimensions = Dimensions(30, 20)
+    val newSnake = Snake(cells = (0..2).map { Cell(it, 0) }, direction = LEFT)
+    val newApples = mockk<Apples>()
+    val snake = spyk(Snake(cells = (1..3).map { Cell(it, 0) }, direction = LEFT)) {
         every { move() } returns this
         every { turn(any()) } returns this
         every { eat(any()) } returns Pair(newSnake, newApples)
     }
-    private val anyDirection = RIGHT
-    private val anyRunningState = State.Running(anyDimensions, anySnake, anyApples)
+    val apples = mockk<Apples> {
+        every { grow() } returns newApples
+    }
+    val runningState = State.Running(dimensions, snake, apples)
+    val direction = RIGHT
 
-    private val updater = StateUpdater(anyRunningState)
+    val updater = StateUpdater(runningState)
 
-    @Test
-    fun `should update from waiting to given first running state`() {
-        assertThat(updater.update(State.Waiting, anyDirection))
-            .isEqualTo(anyRunningState)
+    "updater should update from waiting state to given first running state" {
+        updater.update(State.Waiting, direction) shouldBe runningState
     }
 
-    @Test
-    fun `should turn, move and eat grown apples on update in running state`() {
-        updater.update(anyRunningState, anyDirection)
+    "snake should turn, move and eat grown apples on update in running state" {
+        updater.update(runningState, direction)
 
         verifyOrder {
-            anySnake.turn(anyDirection)
-            anySnake.move()
-            anySnake.eat(newApples)
+            snake.turn(direction)
+            snake.move()
+            snake.eat(newApples)
         }
     }
 
-    @Test
-    fun `should return running state with new snake and apples on update in running state`() {
-        assertThat(updater.update(anyRunningState, anyDirection))
-            .isEqualTo(anyRunningState.copy(snake = newSnake, apples = newApples))
+    "updater should return running state with new snake and apples when updating from running state" {
+        updater.update(runningState, direction) shouldBe runningState.copy(snake = newSnake, apples = newApples)
     }
 
-    @Test
-    fun `should return over state if snake eats itself`() =
-        testOverState(listOf(Cell(0, 1), Cell(0, 0), Cell(1, 0), Cell(1, 1), Cell(1, 2)), RIGHT)
-
-    @Test
-    fun `should return over state if snake runs into top wall`() =
-        testOverState(listOf(Cell(1, 0), Cell(1, 1)), UP)
-
-    @Test
-    fun `should return over state if snake runs into left wall`() =
-        testOverState(listOf(Cell(0, 1), Cell(1, 1)), LEFT)
-
-    @Test
-    fun `should return over state if snake runs into bottom wall`() =
-        testOverState(listOf(Cell(1, anyDimensions.height - 1), Cell(1, anyDimensions.height - 2)), DOWN)
-
-    @Test
-    fun `should return over state if snake runs into right wall`() =
-        testOverState(listOf(Cell(anyDimensions.width - 1, 1), Cell(anyDimensions.width - 2, 1)), RIGHT)
-
-    private fun testOverState(cells: List<Cell>, direction: Direction) {
+    fun testOverState(cells: List<Cell>, direction: Direction) {
         val stateBeforeDeath = State.Running(
-            anyDimensions,
+            dimensions,
             Snake(cells = cells, direction = direction),
-            Apples(field = anyDimensions)
+            Apples(field = dimensions)
         )
 
-        assertThat(updater.update(stateBeforeDeath, direction))
-            .isInstanceOf(State.Over::class.java)
+        updater.update(stateBeforeDeath, direction).shouldBeInstanceOf<State.Over>()
     }
 
-    @Test
-    fun `should return over state with correct score after death`() {
+    "updater should return over state if snake eats itself" {
+        testOverState(listOf(Cell(0, 1), Cell(0, 0), Cell(1, 0), Cell(1, 1), Cell(1, 2)), RIGHT)
+    }
+
+    "updater should return over state if snake runs into top wall" {
+        testOverState(listOf(Cell(1, 0), Cell(1, 1)), UP)
+    }
+
+    "updater should return over state if snake runs into left wall" {
+        testOverState(listOf(Cell(0, 1), Cell(1, 1)), LEFT)
+    }
+
+    "updater should return over state if snake runs into bottom wall" {
+        testOverState(listOf(Cell(1, dimensions.height - 1), Cell(1, dimensions.height - 2)), DOWN)
+    }
+
+    "updater should return over state if snake runs into right wall" {
+        testOverState(listOf(Cell(dimensions.width - 1, 1), Cell(dimensions.width - 2, 1)), RIGHT)
+    }
+
+    "updater should return over state with correct score after death" {
         val stateBeforeDeath = State.Running(
-            anyDimensions,
-            Snake(cells = listOf(Cell(1, 0), Cell(1, 1)), direction = UP, applesEaten = anyApplesEaten),
-            Apples(field = anyDimensions)
+            dimensions,
+            Snake(cells = listOf(Cell(1, 0), Cell(1, 1)), direction = UP, applesEaten = 456),
+            Apples(field = dimensions)
         )
 
-        assertThat((updater.update(stateBeforeDeath, UP) as State.Over).score)
-            .isEqualTo(stateBeforeDeath.score)
+        (updater.update(stateBeforeDeath, UP) as State.Over).score shouldBe stateBeforeDeath.score
     }
 
-    @Test
-    fun `should do nothing on update from over state`() {
+    "updater should do nothing on update from over state" {
         val anyOverState = State.Over(123)
 
-        assertThat(updater.update(anyOverState, anyDirection))
-            .isEqualTo(anyOverState)
+        updater.update(anyOverState, direction) shouldBe anyOverState
     }
-}
+})

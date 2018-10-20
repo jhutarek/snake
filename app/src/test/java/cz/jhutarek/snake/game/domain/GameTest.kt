@@ -3,92 +3,80 @@ package cz.jhutarek.snake.game.domain
 import cz.jhutarek.snake.game.model.*
 import cz.jhutarek.snake.game.model.Direction.DOWN
 import cz.jhutarek.snake.game.model.Direction.UP
-import io.mockk.*
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import cz.jhutarek.snake.game.testinfrastructure.CustomStringSpec
+import io.kotlintest.shouldBe
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 
-internal class GameTest {
+internal class GameTest : CustomStringSpec({
 
-    private val expectedIntervalMillis = 150L
-    private val anySnake = Snake(listOf(Cell(1, 1)), direction = UP)
-    private val anyApples = mockk<Apples>()
-    private val anyFirstRunningState = State.Running(Dimensions(10, 15), anySnake, anyApples)
-    private val anyOtherState = State.Over(123)
-    private val anyStateUpdater = mockk<StateUpdater> {
-        every { firstRunningState } returns anyFirstRunningState
-        every { update(any(), any()) } returns anyOtherState
-    }
-    private val tickerListenerSlot = slot<TickerListener>()
-    private val anyTicker = mockk<Ticker>(relaxUnitFun = true) {
+    val tickerListenerSlot = slot<TickerListener>()
+    val ticker = mockk<Ticker>(relaxUnitFun = true) {
         every { listener = capture(tickerListenerSlot) } returns Unit
     }
-    private val anyListener = mockk<GameListener> {
+    val snake = Snake(listOf(Cell(1, 1)), direction = UP)
+    val apples = mockk<Apples>()
+    val listener = mockk<GameListener> {
         every { this@mockk.invoke(any()) } returns Unit
     }
-
-    private val game = Game(anyStateUpdater, anyTicker).apply {
-        listener = anyListener
+    val firstRunningState = State.Running(Dimensions(10, 15), snake, apples)
+    val otherState = State.Over(123)
+    val stateUpdater = mockk<StateUpdater> {
+        every { this@mockk.firstRunningState } returns firstRunningState
+        every { update(any(), any()) } returns otherState
     }
 
-    @Test
-    fun `should register ticker listener on construction`() {
-        verify { anyTicker.listener = any() }
+    val game = Game(stateUpdater, ticker).apply { this@apply.listener = listener }
+
+    "game should register ticker listener in constructor" {
+        verify { ticker.listener = any() }
     }
 
-    @Test
-    fun `default direction should be direction from state updater`() {
-        assertThat(Game(anyStateUpdater, anyTicker).direction)
-            .isEqualTo(anySnake.direction)
+    "default direction should be direction from state updater" {
+        game.direction shouldBe snake.direction
     }
 
-    @Test
-    fun `should start ticker with correct interval on start`() {
+    "game should start ticker with correct interval on start" {
         game.start()
 
-        verify { anyTicker.start(expectedIntervalMillis) }
+        verify { ticker.start(150L) }
     }
 
-    @Test
-    fun `should notify listener with waiting state when added`() {
-        verify { anyListener(State.Waiting) }
+    "game should notify listener with waiting state when added" {
+        verify { listener(State.Waiting) }
     }
 
-    @Test
-    fun `should notify with waiting state on reset`() {
-        clearMocks(anyListener, answers = false)
-
+    "game should notify listener with waiting state on reset" {
         game.reset()
 
-        verify { anyListener(State.Waiting) }
+        verify { listener(State.Waiting) }
     }
 
-    @Test
-    fun `should stop ticker on reset`() {
+    "game should stop ticker on reset" {
         game.reset()
 
-        verify { anyTicker.stop() }
+        verify { ticker.stop() }
     }
 
-    @Test
-    fun `should request state update with latest direction on ticker listener invocation`() {
+    "game should request state update with latest direction on ticker listener invocation" {
         game.direction = DOWN
 
         tickerListenerSlot.captured.invoke(Unit)
 
-        verify { anyStateUpdater.update(State.Waiting, DOWN) }
+        verify { stateUpdater.update(State.Waiting, DOWN) }
     }
 
-    @Test
-    fun `should notify game listener with next state on ticker listener invocation`() {
+    "game should notify listener with next state on ticker listener invocation" {
         tickerListenerSlot.captured.invoke(Unit)
 
-        verify { anyListener(anyOtherState) }
+        verify { listener(otherState) }
     }
 
-    @Test
-    fun `should stop ticker if next state on ticker listener invocation is over`() {
+    "game should stop ticker if next state on ticker listener invocation is over state" {
         tickerListenerSlot.captured.invoke(Unit)
 
-        verify { anyTicker.stop() }
+        verify { ticker.stop() }
     }
-}
+})
