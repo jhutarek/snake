@@ -5,7 +5,9 @@ import cz.jhutarek.snake.game.model.Dimensions
 import cz.jhutarek.snake.game.model.Direction
 import cz.jhutarek.snake.game.model.State
 import cz.jhutarek.snake.game.model.State.*
+import javax.inject.Singleton
 
+@Singleton
 class StateUpdater(val firstRunningState: State.Running) {
 
     fun update(previous: State, direction: Direction) = when (previous) {

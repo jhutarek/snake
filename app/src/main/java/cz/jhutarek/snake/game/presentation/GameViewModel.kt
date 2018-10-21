@@ -1,17 +1,21 @@
 package cz.jhutarek.snake.game.presentation
 
+import cz.jhutarek.snake.game.domain.Game
 import cz.jhutarek.snake.game.model.Cell
 import cz.jhutarek.snake.game.model.Dimensions
 import cz.jhutarek.snake.game.model.Direction.*
 import cz.jhutarek.snake.game.model.Point
 import cz.jhutarek.snake.game.model.State.*
 import cz.jhutarek.snake.game.model.abs
+import javax.inject.Inject
+import javax.inject.Singleton
 import cz.jhutarek.snake.game.model.State as GameState
 
 typealias GameViewModelListener = (GameViewModel.State) -> Unit
 
-class GameViewModel(
-    private val game: cz.jhutarek.snake.game.domain.Game
+@Singleton
+class GameViewModel @Inject constructor(
+    private val game: Game
 ) {
     init {
         game.listener = { update(it) }

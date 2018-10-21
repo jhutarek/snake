@@ -2,10 +2,13 @@ package cz.jhutarek.snake.game.domain
 
 import cz.jhutarek.snake.game.model.Direction
 import cz.jhutarek.snake.game.model.State
+import javax.inject.Inject
+import javax.inject.Singleton
 
 typealias GameListener = (State) -> Unit
 
-class Game(
+@Singleton
+class Game @Inject constructor(
     private val stateUpdater: StateUpdater,
     private val ticker: Ticker
 ) {
