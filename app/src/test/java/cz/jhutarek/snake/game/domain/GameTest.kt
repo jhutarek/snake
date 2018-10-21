@@ -39,6 +39,14 @@ internal class GameTest : CustomStringSpec({
         game.direction shouldBe snake.direction
     }
 
+    "game should reset the direction to default on start" {
+        game.direction = DOWN
+
+        game.start()
+
+        game.direction shouldBe snake.direction
+    }
+
     "game should start ticker with correct interval on start" {
         game.start()
 

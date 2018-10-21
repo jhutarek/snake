@@ -1,6 +1,5 @@
 package cz.jhutarek.snake.game.domain
 
-import cz.jhutarek.snake.game.model.Direction
 import cz.jhutarek.snake.game.model.State
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,7 +28,9 @@ class Game @Inject constructor(
             field?.invoke(state)
         }
 
-    var direction: Direction = stateUpdater.firstRunningState.snake.direction
+    private val defaultDirection = stateUpdater.firstRunningState.snake.direction
+
+    var direction = defaultDirection
 
     fun reset() {
         ticker.stop()
@@ -37,6 +38,7 @@ class Game @Inject constructor(
     }
 
     fun start() {
+        direction = defaultDirection
         ticker.start(intervalMillis)
     }
 
