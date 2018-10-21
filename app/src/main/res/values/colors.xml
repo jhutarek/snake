@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">@color/_lcd_foreground</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">@color/_lcd_background</color>
+
+    <color name="background">@color/_phone_background</color>
 
     <color name="board_background">@color/_lcd_background</color>
     <color name="board_grid">@color/_lcd_grid</color>
@@ -12,4 +14,5 @@
     <color name="_lcd_background">#b2bb00</color>
     <color name="_lcd_foreground">#5f5300</color>
     <color name="_lcd_grid">#bcc602</color>
+    <color name="_phone_background">#252424</color>
 </resources>
