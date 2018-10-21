@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Snake</string>
+    <string name="app_name">Kotlin Snake</string>
+
+    <string name="intro__instructions">Steer the snake by swiping left, right, up and down.</string>
+    <string name="intro__start">Start!</string>
+
+    <string name="over__title">Game Over!</string>
+    <string name="over__score">Score</string>
+    <string name="over__reset">Try again!</string>
 </resources>

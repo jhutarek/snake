@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".game.system.GameActivity">
 
-    <TextView
-        android:id="@+id/score"
+    <include
+        android:id="@+id/intro"
+        layout="@layout/game__intro_include"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="@color/colorAccent"
-        tools:text="123" />
+        android:layout_gravity="center_vertical" />
+
 
     <cz.jhutarek.snake.gameold.system.BoardView
-        android:id="@+id/board"
+        android:id="@+id/game"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        tools:visibility="gone" />
 
-</LinearLayout>
+    <include
+        android:id="@+id/over"
+        layout="@layout/game__over_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        tools:visibility="gone" />
+
+</FrameLayout>
