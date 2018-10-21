@@ -19,7 +19,7 @@ internal class GameTest : CustomStringSpec({
     val snake = Snake(listOf(Cell(1, 1)), direction = UP)
     val apples = mockk<Apples>()
     val listener = mockk<GameListener> {
-        every { this@mockk.invoke(any()) } returns Unit
+        every { this@mockk(any()) } returns Unit
     }
     val firstRunningState = State.Running(Dimensions(10, 15), snake, apples)
     val otherState = State.Over(123)
@@ -63,19 +63,19 @@ internal class GameTest : CustomStringSpec({
     "game should request state update with latest direction on ticker listener invocation" {
         game.direction = DOWN
 
-        tickerListenerSlot.captured.invoke(Unit)
+        tickerListenerSlot.captured(Unit)
 
         verify { stateUpdater.update(State.Waiting, DOWN) }
     }
 
     "game should notify listener with next state on ticker listener invocation" {
-        tickerListenerSlot.captured.invoke(Unit)
+        tickerListenerSlot.captured(Unit)
 
         verify { listener(otherState) }
     }
 
     "game should stop ticker if next state on ticker listener invocation is over state" {
-        tickerListenerSlot.captured.invoke(Unit)
+        tickerListenerSlot.captured(Unit)
 
         verify { ticker.stop() }
     }
