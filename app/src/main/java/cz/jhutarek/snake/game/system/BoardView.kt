@@ -47,7 +47,6 @@ class BoardView @JvmOverloads constructor(
     private val applePaint = Paint().apply {
         color = appleColor
         style = FILL
-        isAntiAlias = true
     }
 
     private var gridSize: Float = 0f
@@ -103,10 +102,27 @@ class BoardView @JvmOverloads constructor(
     }
 
     private fun drawApples(canvas: Canvas, board: State) {
+        val gridThirdSize = gridSize / 3f
+
         board.apples.forEach {
-            canvas.drawCircle(
-                (it.x + 0.5f) * gridSize, (it.y + 0.5f) * gridSize,
-                gridSize / 2f,
+            canvas.drawRect(
+                it.x * gridSize + gridThirdSize, it.y * gridSize,
+                it.x * gridSize + gridThirdSize * 2, it.y * gridSize + gridThirdSize,
+                applePaint
+            )
+            canvas.drawRect(
+                it.x * gridSize, it.y * gridSize + gridThirdSize,
+                it.x * gridSize + gridThirdSize, it.y * gridSize + gridThirdSize * 2,
+                applePaint
+            )
+            canvas.drawRect(
+                it.x * gridSize + gridThirdSize, it.y * gridSize + gridThirdSize * 2,
+                it.x * gridSize + gridThirdSize * 2, (it.y + 1) * gridSize,
+                applePaint
+            )
+            canvas.drawRect(
+                it.x * gridSize + gridThirdSize * 2, it.y * gridSize + gridThirdSize,
+                (it.x + 1) * gridSize, it.y * gridSize + gridThirdSize * 2,
                 applePaint
             )
         }
