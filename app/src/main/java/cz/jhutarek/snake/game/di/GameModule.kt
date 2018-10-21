@@ -15,7 +15,7 @@ class GameModule {
 
     companion object {
         private val FIELD_DIMENSIONS = Dimensions(20, 20)
-        private val INITIAL_SNAKE = Snake((10..14).map { Cell(it, 10) }, LEFT)
+        private val INITIAL_SNAKE = Snake((14..18).map { Cell(it, 10) }, LEFT)
         private const val INTERVAL = 150L
     }
 
