@@ -37,19 +37,19 @@ internal class GameViewModelTest : CustomStringSpec({
 
     "view model should set correct direction on game based on swipe" {
         forall(
-            row(RIGHT, Point(0, 0), Point(1, 0)),
-            row(LEFT, Point(0, 0), Point(-1, 0)),
-            row(UP, Point(0, 0), Point(0, -1)),
-            row(DOWN, Point(0, 0), Point(0, 1)),
+            row(RIGHT, Point(0f, 0f), Point(1f, 0f)),
+            row(LEFT, Point(0f, 0f), Point(-1f, 0f)),
+            row(UP, Point(0f, 0f), Point(0f, -1f)),
+            row(DOWN, Point(0f, 0f), Point(0f, 1f)),
 
-            row(RIGHT, Point(-1, -1), Point(5, -2)),
-            row(UP, Point(-1, -1), Point(2, -5)),
-            row(UP, Point(-1, -1), Point(-2, -5)),
-            row(LEFT, Point(-1, -1), Point(-5, -2)),
-            row(LEFT, Point(-1, -1), Point(-5, 2)),
-            row(DOWN, Point(-1, -1), Point(-2, 5)),
-            row(DOWN, Point(-1, -1), Point(2, 5)),
-            row(RIGHT, Point(-1, -1), Point(5, 2))
+            row(RIGHT, Point(-1f, -1f), Point(5f, -2f)),
+            row(UP, Point(-1f, -1f), Point(2f, -5f)),
+            row(UP, Point(-1f, -1f), Point(-2f, -5f)),
+            row(LEFT, Point(-1f, -1f), Point(-5f, -2f)),
+            row(LEFT, Point(-1f, -1f), Point(-5f, 2f)),
+            row(DOWN, Point(-1f, -1f), Point(-2f, 5f)),
+            row(DOWN, Point(-1f, -1f), Point(2f, 5f)),
+            row(RIGHT, Point(-1f, -1f), Point(5f, 2f))
         ) { expectedDirection, from, to ->
             clearMocks(game)
 

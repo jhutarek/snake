@@ -70,7 +70,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent) = if (isGameRunning) gestureDetector.onTouchEvent(event) else false
 
-    private fun MotionEvent.toPoint() = Point(x.toInt(), y.toInt())
+    private fun MotionEvent.toPoint() = Point(x, y)
 
     private var View.visible
         get() = this.visibility == VISIBLE

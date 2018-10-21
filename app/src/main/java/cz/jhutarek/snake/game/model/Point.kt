@@ -1,10 +1,10 @@
 package cz.jhutarek.snake.game.model
 
-import kotlin.math.abs as absInt
+import kotlin.math.abs as absFloat
 
-data class Point(val x: Int, val y: Int) {
+data class Point(val x: Float, val y: Float) {
 
     operator fun minus(other: Point) = Point(this.x - other.x, this.y - other.y)
 }
 
-fun abs(point: Point) = Point(absInt(point.x), absInt(point.y))
+fun abs(point: Point) = Point(absFloat(point.x), absFloat(point.y))
