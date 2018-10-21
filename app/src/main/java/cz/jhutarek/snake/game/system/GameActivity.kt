@@ -11,7 +11,6 @@ import androidx.core.view.GestureDetectorCompat
 import cz.jhutarek.snake.R
 import cz.jhutarek.snake.game.model.Point
 import cz.jhutarek.snake.game.presentation.GameViewModel
-import cz.jhutarek.snake.gameold.system.BoardView
 import kotlinx.android.synthetic.main.game__game_activity.*
 import kotlinx.android.synthetic.main.game__game_include.*
 import kotlinx.android.synthetic.main.game__intro_include.*

@@ -1,4 +1,4 @@
-package cz.jhutarek.snake.gameold.system
+package cz.jhutarek.snake.game.system
 
 import android.content.Context
 import android.graphics.Canvas
