@@ -53,7 +53,7 @@ class GameActivity : AppCompatActivity() {
             intro.visible = it.introVisible
             game.visible = it.gameVisible
             over.visible = it.overVisible
-            board.board =
+            board.state =
                     if (it.field != null && it.snake != null && it.apples != null) BoardView.State(it.field, it.snake, it.apples)
                     else null
             gameScore.text = it.score

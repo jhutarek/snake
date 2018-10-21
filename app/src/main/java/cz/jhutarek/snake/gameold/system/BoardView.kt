@@ -48,7 +48,7 @@ class BoardView @JvmOverloads constructor(
 
     private var gridSize: Float = 0f
 
-    var board: State? = null
+    var state: State? = null
         set(value) {
             field = value
             updateGridSize()
@@ -56,7 +56,7 @@ class BoardView @JvmOverloads constructor(
         }
 
     private fun updateGridSize() {
-        gridSize = board?.let {
+        gridSize = state?.let {
             min(width.toFloat() / it.field.width, height.toFloat() / it.field.height)
         } ?: 0f
     }
@@ -70,7 +70,7 @@ class BoardView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         canvas.drawColor(backgroundColor)
 
-        board?.let {
+        state?.let {
             drawHorizontalGridLines(canvas, it)
             drawVerticalGridLines(canvas, it)
             drawApples(canvas, it)
