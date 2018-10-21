@@ -1,5 +1,7 @@
 package cz.jhutarek.snake.game.domain
 
+import cz.jhutarek.snake.game.domain.Vibrator.Pattern.APPLE_EATEN
+import cz.jhutarek.snake.game.domain.Vibrator.Pattern.SNAKE_DIED
 import cz.jhutarek.snake.game.model.*
 import cz.jhutarek.snake.game.model.Direction.DOWN
 import cz.jhutarek.snake.game.model.Direction.UP
@@ -17,6 +19,7 @@ internal class GameTest : CustomStringSpec({
     val ticker = mockk<Ticker>(relaxUnitFun = true) {
         every { listener = capture(tickerListenerSlot) } returns Unit
     }
+    val vibrator = mockk<Vibrator>(relaxUnitFun = true)
     val snake = Snake(listOf(Cell(1, 1)), direction = UP)
     val apples = mockk<Apples>()
     val listener = mockk<GameListener> {
@@ -29,7 +32,7 @@ internal class GameTest : CustomStringSpec({
         every { update(any(), any()) } returns otherState
     }
 
-    val game = Game(stateUpdater, ticker, interval).apply { this@apply.listener = listener }
+    val game = Game(stateUpdater, ticker, interval, vibrator).apply { this@apply.listener = listener }
 
     "game should register ticker listener in constructor" {
         verify { ticker.listener = any() }
@@ -87,5 +90,21 @@ internal class GameTest : CustomStringSpec({
         tickerListenerSlot.captured(Unit)
 
         verify { ticker.stop() }
+    }
+
+    "game should vibrate if the snake has eaten an apple" {
+        every { stateUpdater.update(any(), any()) } returns firstRunningState.copy(snake = snake.copy(futureGrowth = 1))
+
+        tickerListenerSlot.captured(Unit)
+
+        verify { vibrator.vibrate(APPLE_EATEN) }
+    }
+
+    "game should vibrate if the snake has died" {
+        every { stateUpdater.update(any(), any()) } returns State.Over(123)
+
+        tickerListenerSlot.captured(Unit)
+
+        verify { vibrator.vibrate(SNAKE_DIED) }
     }
 })

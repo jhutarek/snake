@@ -1,9 +1,11 @@
 package cz.jhutarek.snake.game.di
 
 import cz.jhutarek.snake.game.device.TickerImpl
+import cz.jhutarek.snake.game.device.VibratorImpl
 import cz.jhutarek.snake.game.domain.Game
 import cz.jhutarek.snake.game.domain.StateUpdater
 import cz.jhutarek.snake.game.domain.Ticker
+import cz.jhutarek.snake.game.domain.Vibrator
 import cz.jhutarek.snake.game.model.*
 import cz.jhutarek.snake.game.model.Direction.LEFT
 import dagger.Module
@@ -36,5 +38,9 @@ class GameModule {
 
     @Provides
     @Singleton
-    fun game(stateUpdater: StateUpdater, ticker: Ticker): Game = Game(stateUpdater, ticker, INTERVAL)
+    fun vibrator(vibratorImpl: VibratorImpl): Vibrator = vibratorImpl
+
+    @Provides
+    @Singleton
+    fun game(stateUpdater: StateUpdater, ticker: Ticker, vibrator: Vibrator): Game = Game(stateUpdater, ticker, INTERVAL, vibrator)
 }

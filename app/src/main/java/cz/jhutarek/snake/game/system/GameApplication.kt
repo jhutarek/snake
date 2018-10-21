@@ -18,6 +18,8 @@ class GameApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        component = DaggerGameComponent.create()
+        component = DaggerGameComponent.builder()
+            .applicationContext(this)
+            .build()
     }
 }

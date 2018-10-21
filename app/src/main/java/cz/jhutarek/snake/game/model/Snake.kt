@@ -4,7 +4,7 @@ data class Snake(
     val cells: List<Cell>,
     val direction: Direction,
     val applesEaten: Int = 0,
-    private val futureGrowth: Int = 0
+    val futureGrowth: Int = 0
 ) {
     companion object {
         private const val APPLE_FUTURE_GROWTH = 1
