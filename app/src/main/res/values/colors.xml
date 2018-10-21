@@ -11,6 +11,8 @@
     <color name="board_snake">@color/_lcd_foreground</color>
     <color name="board_apple">@color/_lcd_foreground</color>
 
+    <color name="button">@color/_phone_background</color>
+
     <color name="_lcd_background">#b2bb00</color>
     <color name="_lcd_foreground">#5f5300</color>
     <color name="_lcd_grid">#bcc602</color>
