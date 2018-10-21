@@ -1,11 +1,15 @@
 package cz.jhutarek.snake.game.system
 
 import android.os.Bundle
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GestureDetectorCompat
 import cz.jhutarek.snake.R
+import cz.jhutarek.snake.game.model.Point
 import cz.jhutarek.snake.game.presentation.GameViewModel
 import cz.jhutarek.snake.gameold.system.BoardView
 import kotlinx.android.synthetic.main.game__game_activity.*
@@ -17,6 +21,19 @@ import javax.inject.Inject
 class GameActivity : AppCompatActivity() {
 
     @Inject internal lateinit var viewModel: GameViewModel
+
+    private val gestureDetector by lazy {
+        GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDown(e: MotionEvent) = true
+
+            override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                viewModel.swipe(e1.toPoint(), e2.toPoint())
+                return true
+            }
+        })
+    }
+
+    private var isGameRunning = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +58,7 @@ class GameActivity : AppCompatActivity() {
                     else null
             gameScore.text = it.score
             overScore.text = it.score
+            isGameRunning = it.gameVisible
         }
     }
 
@@ -50,57 +68,13 @@ class GameActivity : AppCompatActivity() {
         viewModel.listener = null
     }
 
+    override fun onTouchEvent(event: MotionEvent) = if (isGameRunning) gestureDetector.onTouchEvent(event) else false
+
+    private fun MotionEvent.toPoint() = Point(x.toInt(), y.toInt())
+
     private var View.visible
         get() = this.visibility == VISIBLE
         set(value) {
             this.visibility = if (value) VISIBLE else GONE
         }
-
-    /* private class GameGestureListener : GestureDetector.SimpleOnGestureListener() {
-         override fun onDown(e: MotionEvent) = true
-
-         override fun onFling(
-             e1: MotionEvent,
-             e2: MotionEvent,
-             velocityX: Float,
-             velocityY: Float
-         ): Boolean {
-             val dx = abs(e1.x - e2.x)
-             val dy = abs(e1.y - e2.y)
-
-             when {
-                 dx > dy -> when {
-                     e1.x < e2.x -> listener?.onSwipe(RIGHT)
-                     else -> listener?.onSwipe(LEFT)
-                 }
-                 else -> when {
-                     e1.y < e2.y -> listener?.onSwipe(DOWN)
-                     else -> listener?.onSwipe(UP)
-                 }
-             }
-
-             return true
-         }
-     }
-
-     private val gameGestureDetector by lazy {
-         GestureDetectorCompat(this, GameGestureListener().apply {
-             listener = object : GameGestureListener.Listener {
-                 override fun onSwipe(direction: GameGestureListener.Direction) {
-                     game.direction = when (direction) {
-                         UP -> Direction.UP
-                         DOWN -> Direction.DOWN
-                         LEFT -> Direction.LEFT
-                         RIGHT -> Direction.RIGHT
-                     }
-                 }
-             }
-         })
-     }
-
-     override fun onTouchEvent(event: MotionEvent): Boolean {
-         return gameGestureDetector.onTouchEvent(event).let {
-             if (!it) super.onTouchEvent(event) else it
-         }
-     }*/
 }
