@@ -35,6 +35,10 @@ class BoardView @JvmOverloads constructor(
     private val snakeColor = getColor(R.color.board_snake)
     private val appleColor = getColor(R.color.board_apple)
 
+    private val backgroundPaint = Paint().apply {
+        color = backgroundColor
+        style = FILL
+    }
     private val gridPaint = Paint().apply {
         color = gridColor
         strokeWidth = 1f
@@ -71,14 +75,22 @@ class BoardView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawColor(backgroundColor)
-
         state?.let {
+            drawBackground(canvas, it)
             drawApples(canvas, it)
             drawSnake(canvas, it)
             drawHorizontalGridLines(canvas, it)
             drawVerticalGridLines(canvas, it)
         }
+    }
+
+    private fun drawBackground(canvas: Canvas, board: State) {
+        canvas.drawRect(
+            0f, 0f,
+            board.field.width * gridSize,
+            board.field.height * gridSize,
+            backgroundPaint
+        )
     }
 
     private fun drawHorizontalGridLines(canvas: Canvas, board: State) {
