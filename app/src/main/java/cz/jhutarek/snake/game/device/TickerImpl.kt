@@ -3,6 +3,7 @@ package cz.jhutarek.snake.game.device
 import cz.jhutarek.snake.game.domain.Ticker
 import cz.jhutarek.snake.game.domain.TickerListener
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
@@ -17,6 +18,7 @@ class TickerImpl @Inject constructor() : Ticker {
 
     override fun start(intervalMillis: Long) {
         disposable = Observable.interval(intervalMillis, MILLISECONDS)
+            .observeOn(mainThread())
             .subscribe { listener?.invoke(Unit) }
     }
 
