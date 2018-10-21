@@ -8,18 +8,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/large_padding"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textAppearance="?textAppearanceHeadline4" />
+        android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="@color/colorAccent" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/large_padding"
         android:gravity="center"
         android:text="@string/intro__instructions"
-        android:textAppearance="?textAppearanceHeadline6" />
+        android:textAppearance="?textAppearanceHeadline4" />
 
     <Button
         android:id="@+id/start"

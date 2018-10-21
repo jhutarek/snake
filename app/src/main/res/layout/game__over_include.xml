@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/large_padding"
         android:gravity="center"
         android:text="@string/over__title"
         android:textAppearance="?textAppearanceHeadline4" />
@@ -19,15 +19,17 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/over__score"
-        android:textAppearance="?textAppearanceHeadline6" />
+        android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="@color/colorAccent" />
 
     <TextView
         android:id="@+id/overScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/large_padding"
         android:gravity="center"
-        android:textAppearance="?textAppearanceHeadline6"
+        android:textAppearance="?textAppearanceHeadline4"
+        android:textColor="@color/colorAccent"
         tools:text="14 500" />
 
     <Button
