@@ -12,6 +12,7 @@ import io.mockk.verify
 
 internal class GameTest : CustomStringSpec({
 
+    val interval = 1234L
     val tickerListenerSlot = slot<TickerListener>()
     val ticker = mockk<Ticker>(relaxUnitFun = true) {
         every { listener = capture(tickerListenerSlot) } returns Unit
@@ -28,7 +29,7 @@ internal class GameTest : CustomStringSpec({
         every { update(any(), any()) } returns otherState
     }
 
-    val game = Game(stateUpdater, ticker).apply { this@apply.listener = listener }
+    val game = Game(stateUpdater, ticker, interval).apply { this@apply.listener = listener }
 
     "game should register ticker listener in constructor" {
         verify { ticker.listener = any() }
@@ -41,7 +42,7 @@ internal class GameTest : CustomStringSpec({
     "game should start ticker with correct interval on start" {
         game.start()
 
-        verify { ticker.start(150L) }
+        verify { ticker.start(interval) }
     }
 
     "game should notify listener with waiting state when added" {

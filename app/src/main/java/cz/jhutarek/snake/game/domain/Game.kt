@@ -10,14 +10,11 @@ typealias GameListener = (State) -> Unit
 @Singleton
 class Game @Inject constructor(
     private val stateUpdater: StateUpdater,
-    private val ticker: Ticker
+    private val ticker: Ticker,
+    private val intervalMillis: Long
 ) {
     init {
         ticker.listener = { update() }
-    }
-
-    companion object {
-        private const val TICKER_INTERVAL_MILLIS = 150L
     }
 
     private var state: State = State.Waiting
@@ -40,7 +37,7 @@ class Game @Inject constructor(
     }
 
     fun start() {
-        ticker.start(TICKER_INTERVAL_MILLIS)
+        ticker.start(intervalMillis)
     }
 
     private fun update() {

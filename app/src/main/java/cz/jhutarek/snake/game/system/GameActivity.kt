@@ -19,14 +19,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     /* private class GameGestureListener : GestureDetector.SimpleOnGestureListener() {
-         enum class Direction { UP, DOWN, LEFT, RIGHT }
-
-         interface Listener {
-             fun onSwipe(direction: Direction)
-         }
-
-         var listener: Listener? = null
-
          override fun onDown(e: MotionEvent) = true
 
          override fun onFling(
@@ -66,34 +58,6 @@ class GameActivity : AppCompatActivity() {
                  }
              }
          })
-     }
-
-     private val game = Game(
-         StateUpdater(
-             State.Running(
-                 Dimensions(20, 20),
-                 Snake(cells = (10..14).map { Cell(it, 10) }, direction = Direction.LEFT),
-                 Apples(field = Dimensions(20, 20))
-             )
-         ),
-         TickerImpl()
-     ).apply {
-         listener = {
-             when (it) {
-                 is State.Running -> {
-                     this@GameActivity.board.board = it
-                     this@GameActivity.score.text = it.score.toString()
-                 }
-             }
-         }
-     }
-
-     override fun onCreate(savedInstanceState: Bundle?) {
-         super.onCreate(savedInstanceState)
-
-         setContentView(R.layout.game__game_activity)
-
-         game.start()
      }
 
      override fun onTouchEvent(event: MotionEvent): Boolean {
