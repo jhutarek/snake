@@ -20,6 +20,10 @@ class BoardView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
+    companion object {
+        private const val gridSubDivisions = 3
+    }
+
     data class State(
         val field: Dimensions,
         val snake: List<Cell>,
@@ -33,7 +37,7 @@ class BoardView @JvmOverloads constructor(
 
     private val gridPaint = Paint().apply {
         color = gridColor
-        strokeWidth = 2f
+        strokeWidth = 1f
         style = STROKE
     }
     private val snakePaint = Paint().apply {
@@ -71,28 +75,28 @@ class BoardView @JvmOverloads constructor(
         canvas.drawColor(backgroundColor)
 
         state?.let {
-            drawHorizontalGridLines(canvas, it)
-            drawVerticalGridLines(canvas, it)
             drawApples(canvas, it)
             drawSnake(canvas, it)
+            drawHorizontalGridLines(canvas, it)
+            drawVerticalGridLines(canvas, it)
         }
     }
 
     private fun drawHorizontalGridLines(canvas: Canvas, board: State) {
-        for (i in 0..board.field.height) {
+        for (i in 0..board.field.height * gridSubDivisions) {
             canvas.drawLine(
-                0f, i * gridSize,
-                board.field.width * gridSize, i * gridSize,
+                0f, i * gridSize / gridSubDivisions,
+                board.field.width * gridSize, i * gridSize / gridSubDivisions,
                 gridPaint
             )
         }
     }
 
     private fun drawVerticalGridLines(canvas: Canvas, board: State) {
-        for (i in 0..board.field.width) {
+        for (i in 0..board.field.width * gridSubDivisions) {
             canvas.drawLine(
-                i * gridSize, 0f,
-                i * gridSize, board.field.height * gridSize,
+                i * gridSize / gridSubDivisions, 0f,
+                i * gridSize / gridSubDivisions, board.field.height * gridSize,
                 gridPaint
             )
         }
