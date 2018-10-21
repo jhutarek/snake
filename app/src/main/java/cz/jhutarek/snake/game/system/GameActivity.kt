@@ -1,9 +1,17 @@
 package cz.jhutarek.snake.game.system
 
 import android.os.Bundle
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import cz.jhutarek.snake.R
 import cz.jhutarek.snake.game.presentation.GameViewModel
+import cz.jhutarek.snake.gameold.system.BoardView
+import kotlinx.android.synthetic.main.game__game_activity.*
+import kotlinx.android.synthetic.main.game__game_include.*
+import kotlinx.android.synthetic.main.game__intro_include.*
+import kotlinx.android.synthetic.main.game__over_include.*
 import javax.inject.Inject
 
 class GameActivity : AppCompatActivity() {
@@ -16,7 +24,37 @@ class GameActivity : AppCompatActivity() {
         GameApplication.getInjector(this).inject(this)
 
         setContentView(R.layout.game__game_activity)
+
+        start.setOnClickListener { viewModel.start() }
+        reset.setOnClickListener { viewModel.reset() }
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.listener = {
+            intro.visible = it.introVisible
+            game.visible = it.gameVisible
+            over.visible = it.overVisible
+            board.board =
+                    if (it.field != null && it.snake != null && it.apples != null) BoardView.State(it.field, it.snake, it.apples)
+                    else null
+            gameScore.text = it.score
+            overScore.text = it.score
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        viewModel.listener = null
+    }
+
+    private var View.visible
+        get() = this.visibility == VISIBLE
+        set(value) {
+            this.visibility = if (value) VISIBLE else GONE
+        }
 
     /* private class GameGestureListener : GestureDetector.SimpleOnGestureListener() {
          override fun onDown(e: MotionEvent) = true

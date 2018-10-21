@@ -111,7 +111,7 @@ internal class GameViewModelTest : CustomStringSpec({
                     field = field,
                     snake = snake.cells,
                     apples = apples.cells,
-                    score = runningState.score
+                    score = runningState.score.toString()
                 ),
                 runningState
             ),
@@ -123,7 +123,7 @@ internal class GameViewModelTest : CustomStringSpec({
                     field = null,
                     snake = null,
                     apples = null,
-                    score = overState.score
+                    score = overState.score.toString()
                 ),
                 overState
             )

@@ -28,7 +28,7 @@ class GameViewModel @Inject constructor(
         val field: Dimensions?,
         val snake: List<Cell>?,
         val apples: Set<Cell>?,
-        val score: Int?
+        val score: String?
     )
 
     private var state = State(
@@ -92,7 +92,7 @@ class GameViewModel @Inject constructor(
                 field = gameState.field,
                 snake = gameState.snake.cells,
                 apples = gameState.apples.cells,
-                score = gameState.score
+                score = gameState.score.toString()
             )
             is Over -> State(
                 introVisible = false,
@@ -101,7 +101,7 @@ class GameViewModel @Inject constructor(
                 field = null,
                 snake = null,
                 apples = null,
-                score = gameState.score
+                score = gameState.score.toString()
             )
         }
     }
