@@ -75,19 +75,19 @@ internal class GameTest : CustomStringSpec({
     "game should request state update with latest direction on ticker listener invocation" {
         game.direction = DOWN
 
-        tickerListenerSlot.captured(Unit)
+        tickerListenerSlot.captured()
 
         verify { stateUpdater.update(State.Waiting, DOWN) }
     }
 
     "game should notify listener with next state on ticker listener invocation" {
-        tickerListenerSlot.captured(Unit)
+        tickerListenerSlot.captured()
 
         verify { listener(otherState) }
     }
 
     "game should stop ticker if next state on ticker listener invocation is over state" {
-        tickerListenerSlot.captured(Unit)
+        tickerListenerSlot.captured()
 
         verify { ticker.stop() }
     }
@@ -95,7 +95,7 @@ internal class GameTest : CustomStringSpec({
     "game should vibrate if the snake has eaten an apple" {
         every { stateUpdater.update(any(), any()) } returns firstRunningState.copy(snake = snake.copy(futureGrowth = 1))
 
-        tickerListenerSlot.captured(Unit)
+        tickerListenerSlot.captured()
 
         verify { vibrator.vibrate(APPLE_EATEN) }
     }
@@ -103,7 +103,7 @@ internal class GameTest : CustomStringSpec({
     "game should vibrate if the snake has died" {
         every { stateUpdater.update(any(), any()) } returns State.Over(123)
 
-        tickerListenerSlot.captured(Unit)
+        tickerListenerSlot.captured()
 
         verify { vibrator.vibrate(SNAKE_DIED) }
     }

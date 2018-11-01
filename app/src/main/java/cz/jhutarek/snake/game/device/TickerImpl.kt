@@ -19,7 +19,7 @@ class TickerImpl @Inject constructor() : Ticker {
     override fun start(intervalMillis: Long) {
         disposable = Observable.interval(intervalMillis, MILLISECONDS)
             .observeOn(mainThread())
-            .subscribe { listener?.invoke(Unit) }
+            .subscribe { listener?.invoke() }
     }
 
     override fun stop() {

@@ -1,6 +1,6 @@
 package cz.jhutarek.snake.game.domain
 
-typealias TickerListener = (Unit) -> Unit
+typealias TickerListener = () -> Unit
 
 interface Ticker {
 
