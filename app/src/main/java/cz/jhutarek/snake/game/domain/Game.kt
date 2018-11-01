@@ -31,7 +31,7 @@ class Game @Inject constructor(
             field?.invoke(state)
         }
 
-    private val defaultDirection = stateUpdater.firstRunningState.snake.direction
+    private val defaultDirection = stateUpdater.initialRunningState.snake.direction
 
     var direction = defaultDirection
 

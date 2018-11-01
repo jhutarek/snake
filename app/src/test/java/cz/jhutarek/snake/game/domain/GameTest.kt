@@ -28,7 +28,7 @@ internal class GameTest : CustomStringSpec({
     val firstRunningState = State.Running(Dimensions(10, 15), snake, apples)
     val otherState = State.Over(123)
     val stateUpdater = mockk<StateUpdater> {
-        every { this@mockk.firstRunningState } returns firstRunningState
+        every { this@mockk.initialRunningState } returns firstRunningState
         every { update(any(), any()) } returns otherState
     }
 

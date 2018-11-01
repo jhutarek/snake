@@ -8,10 +8,10 @@ import cz.jhutarek.snake.game.model.State.*
 import javax.inject.Singleton
 
 @Singleton
-class StateUpdater(val firstRunningState: State.Running) {
+class StateUpdater(val initialRunningState: State.Running) {
 
     fun update(previous: State, direction: Direction) = when (previous) {
-        is Waiting -> firstRunningState
+        is Waiting -> initialRunningState
         is Running -> previous.snake
             .turn(direction)
             .move()
