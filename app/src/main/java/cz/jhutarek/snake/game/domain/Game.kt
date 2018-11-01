@@ -16,7 +16,7 @@ class Game @Inject constructor(
     private val vibrator: Vibrator
 ) {
     init {
-        ticker.listener = { update() }
+        ticker.listener = ::update
     }
 
     private var state: State = State.Waiting

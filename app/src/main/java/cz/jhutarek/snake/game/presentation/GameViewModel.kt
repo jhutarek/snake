@@ -18,7 +18,7 @@ class GameViewModel @Inject constructor(
     private val game: Game
 ) {
     init {
-        game.listener = { update(it) }
+        game.listener = ::update
     }
 
     data class State(
