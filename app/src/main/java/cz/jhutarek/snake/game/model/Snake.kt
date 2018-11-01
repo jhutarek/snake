@@ -31,7 +31,7 @@ data class Snake(
     }
 
     fun turn(direction: Direction) =
-        if (this.direction.isPerpendicular(direction)) copy(direction = direction)
+        if (this.direction isPerpendicularTo direction) copy(direction = direction)
         else this
 
     fun eat(apples: Apples) =

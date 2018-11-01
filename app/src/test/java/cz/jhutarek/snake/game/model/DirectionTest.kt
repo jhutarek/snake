@@ -39,7 +39,7 @@ internal class DirectionTest : CustomStringSpec({
             row(true, RIGHT, UP),
             row(true, UP, RIGHT)
         ) { expectedIsPerpendicular, direction1, direction2 ->
-            direction1.isPerpendicular(direction2) shouldBe expectedIsPerpendicular
+            direction1 isPerpendicularTo direction2 shouldBe expectedIsPerpendicular
         }
     }
 })
