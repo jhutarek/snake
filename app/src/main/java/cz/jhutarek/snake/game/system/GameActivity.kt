@@ -9,7 +9,6 @@ import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import cz.jhutarek.snake.R
-import cz.jhutarek.snake.game.model.Point
 import cz.jhutarek.snake.game.presentation.GameViewModel
 import kotlinx.android.synthetic.main.game__game_activity.*
 import kotlinx.android.synthetic.main.game__game_include.*
@@ -26,7 +25,8 @@ class GameActivity : AppCompatActivity() {
             override fun onDown(e: MotionEvent) = true
 
             override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
-                viewModel.swipe(e1.toPoint(), e2.toPoint())
+                // TODO uncomment
+                // viewModel.swipe(e1.toPoint(), e2.toPoint())
                 return true
             }
         })
@@ -52,9 +52,10 @@ class GameActivity : AppCompatActivity() {
             intro.visible = it.introVisible
             game.visible = it.gameVisible
             over.visible = it.overVisible
-            board.state =
-                    if (it.field != null && it.snake != null && it.apples != null) BoardView.State(it.field, it.snake, it.apples)
-                    else null
+            board.state = null
+            // TODO uncomment
+            //if (it.field != null && it.snake != null && it.apples != null) BoardView.State(it.field, it.snake, it.apples)
+            //else null
             gameScore.text = it.score
             overScore.text = it.score
             isGameRunning = it.gameVisible
@@ -69,7 +70,8 @@ class GameActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent) = if (isGameRunning) gestureDetector.onTouchEvent(event) else false
 
-    private fun MotionEvent.toPoint() = Point(x, y)
+    // TODO uncomment
+    //private fun MotionEvent.toPoint() = Point(x, y)
 
     private var View.visible
         get() = this.visibility == VISIBLE

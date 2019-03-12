@@ -1,33 +1,32 @@
 package cz.jhutarek.snake.game.presentation
 
-import cz.jhutarek.snake.game.domain.Game
-import cz.jhutarek.snake.game.model.Cell
-import cz.jhutarek.snake.game.model.Dimensions
-import cz.jhutarek.snake.game.model.Direction.*
-import cz.jhutarek.snake.game.model.Point
-import cz.jhutarek.snake.game.model.State.*
-import cz.jhutarek.snake.game.model.abs
+import android.graphics.Point
 import javax.inject.Inject
 import javax.inject.Singleton
-import cz.jhutarek.snake.game.model.State as GameState
+
+// TODO uncomment
+// import cz.jhutarek.snake.game.model.State as GameState
 
 typealias GameViewModelListener = (GameViewModel.State) -> Unit
 
 @Singleton
 class GameViewModel @Inject constructor(
-    private val game: Game
+// TODO uncomment
+//    private val game: Game
 ) {
     init {
-        game.listener = ::update
+// TODO uncomment
+//        game.listener = ::update
     }
 
     data class State(
         val introVisible: Boolean,
         val gameVisible: Boolean,
         val overVisible: Boolean,
-        val field: Dimensions?,
-        val snake: List<Cell>?,
-        val apples: Set<Cell>?,
+// TODO uncomment
+//        val field: Dimensions?,
+//        val snake: List<Cell>?,
+//        val apples: Set<Cell>?,
         val score: String?
     )
 
@@ -35,9 +34,10 @@ class GameViewModel @Inject constructor(
         introVisible = true,
         gameVisible = false,
         overVisible = false,
-        field = null,
-        snake = null,
-        apples = null,
+// TODO uncomment
+//        field = null,
+//        snake = null,
+//        apples = null,
         score = null
     )
         set(value) {
@@ -52,57 +52,61 @@ class GameViewModel @Inject constructor(
         }
 
     fun reset() {
-        game.reset()
+// TODO uncomment
+//        game.reset()
     }
 
     fun start() {
-        game.start()
+// TODO uncomment
+//        game.start()
     }
 
     fun swipe(from: Point, to: Point) {
-        val (dx, dy) = abs(from - to)
-
-        when {
-            dx > dy -> when {
-                from.x < to.x -> RIGHT
-                else -> LEFT
-            }
-            else -> when {
-                from.y < to.y -> DOWN
-                else -> UP
-            }
-        }.let { game.direction = it }
+// TODO uncomment
+//        val (dx, dy) = abs(from - to)
+//
+//        when {
+//            dx > dy -> when {
+//                from.x < to.x -> RIGHT
+//                else -> LEFT
+//            }
+//            else -> when {
+//                from.y < to.y -> DOWN
+//                else -> UP
+//            }
+//        }.let { game.direction = it }
     }
 
-    private fun update(gameState: GameState) {
-        state = when (gameState) {
-            is Waiting -> State(
-                introVisible = true,
-                gameVisible = false,
-                overVisible = false,
-                field = null,
-                snake = null,
-                apples = null,
-                score = null
-            )
-            is Running -> State(
-                introVisible = false,
-                gameVisible = true,
-                overVisible = false,
-                field = gameState.field,
-                snake = gameState.snake.cells,
-                apples = gameState.apples.cells,
-                score = gameState.score.toString()
-            )
-            is Over -> State(
-                introVisible = false,
-                gameVisible = false,
-                overVisible = true,
-                field = null,
-                snake = null,
-                apples = null,
-                score = gameState.score.toString()
-            )
-        }
-    }
+// TODO uncomment
+//    private fun update(gameState: GameState) {
+//        state = when (gameState) {
+//            is Waiting -> State(
+//                introVisible = true,
+//                gameVisible = false,
+//                overVisible = false,
+//                field = null,
+//                snake = null,
+//                apples = null,
+//                score = null
+//            )
+//            is Running -> State(
+//                introVisible = false,
+//                gameVisible = true,
+//                overVisible = false,
+//                field = gameState.field,
+//                snake = gameState.snake.cells,
+//                apples = gameState.apples.cells,
+//                score = gameState.score.toString()
+//            )
+//            is Over -> State(
+//                introVisible = false,
+//                gameVisible = false,
+//                overVisible = true,
+//                field = null,
+//                snake = null,
+//                apples = null,
+//                score = gameState.score.toString()
+//            )
+//        }
+//    }
 }
