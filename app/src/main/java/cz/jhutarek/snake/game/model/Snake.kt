@@ -10,6 +10,8 @@ data class Snake(
         private const val APPLE_FUTURE_GROWTH = 1
     }
 
+    data class EatingResult(val snake: Snake, val apples: Apples)
+
     init {
         require(cells.isNotEmpty()) { "Cells must not be empty" }
         require(head.move(direction) != tail.firstOrNull()) { "Direction must not reverse the snake" }
@@ -35,14 +37,14 @@ data class Snake(
         else this
 
     fun eat(apples: Apples) =
-        if (head in apples.cells) Pair(
-            this.copy(
+        if (head in apples.cells) EatingResult(
+            snake = this.copy(
                 futureGrowth = futureGrowth + APPLE_FUTURE_GROWTH,
                 applesEaten = applesEaten + 1
             ),
-            apples.copy(
+            apples = apples.copy(
                 cells = apples.cells - head
             )
         )
-        else Pair(this, apples)
+        else EatingResult(snake = this, apples = apples)
 }

@@ -18,7 +18,7 @@ internal class StateUpdaterTest : CustomStringSpec({
     val snake = spyk(Snake(cells = (1..3).map { Cell(it, 0) }, direction = LEFT)) {
         every { move() } returns this
         every { turn(any()) } returns this
-        every { eat(any()) } returns Pair(newSnake, newApples)
+        every { eat(any()) } returns Snake.EatingResult(newSnake, newApples)
     }
     val apples = mockk<Apples> {
         every { grow() } returns newApples

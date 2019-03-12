@@ -73,13 +73,16 @@ internal class SnakeTest : CustomStringSpec({
     }
 
     "snake should be the same after eating no apples" {
-        snake.eat(apples) shouldBe Pair(snake, apples)
+        snake.eat(apples) shouldBe Snake.EatingResult(snake, apples)
     }
 
     "snake should return new snake with apples eaten and future growth and apples without eaten apple if apple was eaten" {
         val applesToEat = apples.copy(cells = setOf(headCell, Cell(0, 0)))
 
-        snake.eat(applesToEat) shouldBe Pair(snake.copy(futureGrowth = 1, applesEaten = 1), applesToEat.copy(cells = setOf(Cell(0, 0))))
+        snake.eat(applesToEat) shouldBe Snake.EatingResult(
+            snake.copy(futureGrowth = 1, applesEaten = 1),
+            applesToEat.copy(cells = setOf(Cell(0, 0)))
+        )
     }
 
     "snake should grow tail on next move if future growth is greater than zero" {
